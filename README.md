@@ -82,13 +82,66 @@ python CNN_image_freeze.py --mode 0
 ```
 To train the temporal CNN:
 ```
-python CNN_flowe_freeze.py --mode 0
+python CNN_flow_freeze.py --mode 0
 ```
 To train the two-stream CNN:
 ```
-python CNN_flowe_freeze.py --mode 0
+python CNN_fusion_freeze.py --mode 0
 ```
 
 Change mode 0 to mode 1 for testing.
 
 ### Step 4: Training and testing LSTM models
+
+#### Step 4.1: prepare data
+
+#### Step 4.2: Extract CNN features for LSTM
+To generate CNN image features of each individual video clip and save them under folders indivi_feat_train/test
+```
+python  LSTM_CNNfeature_image_indivi
+```
+To generate CNN flow features of each individual video clip and save them under folders indivi_feat_train/test
+```
+python  LSTM_CNNfeature_flow_indivi
+```
+To generate two-stream CNN features of each individual video clip and save them under folders indivi_feat_train/test
+```
+python  LSTM_CNNfeature_fusion_indivi 
+```
+To combine all features into a single input file
+```
+python  prepare_image_flow_feature
+```
+
+#### Step 4.3: Training and testing CNN models
+
+To train the spatial CNN:
+```
+python LSTM_CNN_image.py --mode 0
+```
+To train the temporal CNN:
+```
+python LSTM_CNN_flow.py --mode 0
+```
+To train the two-stream CNN:
+```
+python LSTM_CNN_fusion.py --mode 0
+```
+
+Change mode 0 to mode 1 for testing.
+
+#### Step 4.4: Training and testing the softmax layer of CNN models
+To train the spatial CNN:
+```
+python LSTM_CNN_image_freeze.py --mode 0
+```
+To train the temporal CNN:
+```
+python LSTM_CNN_flow_freeze.py --mode 0
+```
+To train the two-stream CNN:
+```
+python LSTM_CNN_fusion_freeze.py --mode 0
+```
+
+Change mode 0 to mode 1 for testing.
