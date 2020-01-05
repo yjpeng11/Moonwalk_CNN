@@ -78,6 +78,7 @@ NUM_CLASSES = 2   # 15 51 4
 name2id = {'causal':1,'moonwalk':2}  # for left right softmax
 #name2id = {'eat': 3,'sit': 38, 'smoke': 41, 'walk': 50} # for Human3.6
 #name2id = {'dive': 8, 'fencing': 14, 'golf': 16, 'punch': 28, 'ride_bike': 31} # for UCF 101
+#name2id = {'dive': 8, 'fencing': 14, 'golf': 16, 'punch': 28, 'ride_bike': 31} # for HMDB51
 
 #data_path = "/mnt/Data/2/ActionCNN_simulation/ActionNN_Inversion/98action_opencv/localnomotion_8P_life1_inv/test01_localnomotion_8P_life1_inv_left.mat"
 data_path = "/mnt/Data/4/ActionSimulation2/Moonwalk/causal/causal_moonwalk/test01_causal_moonwalk_leftright_0.8.mat"
