@@ -24,7 +24,7 @@ from keras import objectives, initializers
 from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 from keras.optimizers import SGD, RMSprop
 from keras.applications.vgg16 import VGG16
-
+import scipy.io as sio
 #%%
 def label2vec(label, num_classes):
     """convert label into a one-hot vector"""
@@ -112,29 +112,6 @@ def my_init(shape, dtype=None):
     """customized initialization"""
     return K.random_normal(shape, mean=0.0, stddev=0.01, dtype=dtype)
 
-#%%
-# def build_model(args,
-#                 weights_path = None):
-#     """build image model"""
-#     X = Input(shape = (args.img_rows, args.img_cols, args.img_chns), name = 'input_image')
-#     CNN_VGG16 = VGG16(include_top = True,
-#                 weights = None,
-#                 input_shape = (args.img_rows, args.img_cols, args.img_chns))
-#     CNN = Model(inputs = CNN_VGG16.input, outputs = CNN_VGG16.get_layer('flatten').output)
-#     flatten = CNN(X)
-#     dense1 = Dense(4096, activation = 'relu', kernel_initializer = my_init, name = 'dense_1')(flatten)
-#     dp1 = Dropout(args.dropout_rate, name = 'dp_1')(dense1)
-#     dense2 = Dense(4096, activation = 'relu', kernel_initializer = my_init, name = 'dense_2')(dp1)
-#     dp2 = Dropout(args.dropout_rate, name = 'dp_2')(dense2)
-#     softmax = Dense(args.num_classes, activation = 'softmax', kernel_initializer = my_init, name = 'dense_3')(dp2)
-#
-#     model = Model(inputs = X, outputs = softmax)
-#
-#     if weights_path:
-#         model.load_weights(weights_path, by_name = True)
-#
-#     return model
-
 def build_model(args,
                 weights_path = None,
                 output_feature = False):
@@ -162,7 +139,6 @@ def build_model(args,
 
     return model
 
-
 def compute_confusion_matrix(softmax_output, Y_GT, num_classes):
     Y_bar = np.argmax(softmax_output, axis=1)
     # Y_GT = np.argmax(Y_test, axis=1)
@@ -185,7 +161,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=123, help='Random seed')
     parser.add_argument('--num-classes', type=int, default=15, help='Number of output labels')
     parser.add_argument('--max-nb', type=int, default=5000, help='Maximum number of instances of a class')
-    parser.add_argument('--batch-size', type=int, default=16, help='Batch size')
+    parser.add_argument('--batch-size', type=int, default=128, help='Batch size')
     parser.add_argument('--dropout-rate', type=float, default=0.5, help='Dropout rate')
     parser.add_argument('--lr', type=float, default=1e-4, help='Learning rate')
     parser.add_argument('--num-epochs', type=int, default=1000, help='Number of training epoches')
@@ -196,18 +172,13 @@ if __name__ == '__main__':
     parser.add_argument('--mode', type=int, default=1, help='Running mode, 0 - training, 1 - testing')
     args = parser.parse_args()
 
-    WORKSPACE = '/mnt/Data/2/ActionCNN_simulation/two_stream/hmdb51'
+    WORKSPACE = '/mnt/Data/2/ActionCNN_simulation/two_stream_LSTM/hmdb51'
     
     # load data
     train_data_path = os.path.join(WORKSPACE, 'flow_train_data.pik')
     train_data = cPickle.load(open(train_data_path))
     X_u_train = train_data['flow_u'][::args.reduce_factor]
     X_v_train = train_data['flow_v'][::args.reduce_factor]
-
-    #totalsplit = 4
-    #split = 1
-    #X_u_train = X_u_train[((split-1)*len(X_u_train)//totalsplit):(split*len(X_u_train)//totalsplit)]
-    #X_v_train = X_v_train[((split-1)*len(X_v_train)//totalsplit):(split*len(X_v_train)//totalsplit)]
 
     print(len(X_u_train))
 
@@ -270,7 +241,7 @@ if __name__ == '__main__':
         score, ConfusionMat = compute_confusion_matrix(softmax_output, Y_val, args.num_classes)
         print 'ConfusionMat:',ConfusionMat
         print 'score:', score
-        # np.save(WORKSPACE + '/conf_mat_val_flow.npy', ConfusionMat)
+        np.save(WORKSPACE + '/conf_mat_val_flow.npy', ConfusionMat)
         #Confusionmat = np.load('sss')
     else: # testing
         model = build_model(args, CHECKPOINT_PATH, output_feature = True)
@@ -292,7 +263,7 @@ if __name__ == '__main__':
             X_u_train, X_v_train, Y_train, args, is_shuffle = False), steps = steps_train, verbose = 1)
         CNN_features_train = output_train[1]
         np.save(WORKSPACE + '/feature_maps_flow_train.npy', CNN_features_train)
-        
- 
+        # sio.savemat(WORKSPACE + '/conf_mat_val_flow', {'ConfusionMat': ConfusionMat})
+
         
 

@@ -3,6 +3,9 @@ import cPickle
 import scipy.io as sio
 import numpy as np
 
+NUM_CLASSES = 3
+name2id = {'causal':1,'moonwalk':2, 'backward':3}  #
+data_path = "/mnt/Data/4/ActionSimulation2/Moonwalk/causal/causal_moonwalk_backward/LSTM/test01_causal_moonwalk_backward_leftright.mat"
 
 def label2vec(label, num_classes):
     """convert label into a one-hot vector"""
@@ -69,25 +72,8 @@ def prepare_data(X_data, Y_data, num_classes, name2id):
 		    'labels': Y}
             #'video_ids': video_ids}
 
-
-NUM_CLASSES = 2   # 15 51 4
-#name2id = {'brush_hair': 1, 'cartwheel':2,'catch':3, 'chew':4,'clap':5,'climb':6,'climb_stairs':7, 'dive': 8,'draw_sword':9,'dribble':10, 'drink':11,'eat':12, 'fall_floor':13,'fencing': 14,'flic_flac':15, 'golf': 16, 'handstand':17,'hit':18,'hug':19,'jump':20,'kick_ball':21,'kick':22,'kiss':23,'laugh':24,'pick':25,'pour':26,'pullup':27,'punch': 28, 'push':29,'pushup':30,'ride_bike':31,'ride_horse':32,'run':33,'shake_hands':34,'shoot_ball':35,'shoot_bow':36,'shoot_gun':37,'sit':38, 'situp':39,'smile':40,'smoke':41,'somersault':42,'stand':43,'swing_baseball':44,'sword_exercise':45,'sword':46,'talk':47,'throw':48,'turn':49,'walk':50,'wave':51} # for HMDB-51
-#name2id = {'eat': 1,'sit': 2, 'smoke': 3, 'walk': 4}
-#name2id = {'direction': 1, 'discuss':2,'eat':3, 'greet':4,'phone':5,'pose':6,'purchase':7, 'sit': 8,'sitdown':9,'smoke':10, 'photo':11,'wait':12, 'walk':13,'walkdog': 14,'walktogether':15}
-#name2id = {'left':1,'right':2}  # for left right softmax
-name2id = {'causal':1,'moonwalk':2}  # for left right softmax
-#name2id = {'eat': 3,'sit': 38, 'smoke': 41, 'walk': 50} # for Human3.6
-#name2id = {'dive': 8, 'fencing': 14, 'golf': 16, 'punch': 28, 'ride_bike': 31} # for UCF 101
-#name2id = {'dive': 8, 'fencing': 14, 'golf': 16, 'punch': 28, 'ride_bike': 31} # for HMDB51
-
-#data_path = "/mnt/Data/2/ActionCNN_simulation/ActionNN_Inversion/98action_opencv/localnomotion_8P_life1_inv/test01_localnomotion_8P_life1_inv_left.mat"
-data_path = "/mnt/Data/4/ActionSimulation2/Moonwalk/causal/causal_moonwalk/test01_causal_moonwalk_leftright_0.8.mat"
-
 data = sio.loadmat(data_path)
 train_data = prepare_data(data['trainx'][0], data['trainy'][0], NUM_CLASSES, name2id)
 cPickle.dump(train_data, open("./hmdb51/flow_train_data.pik", "wb"), protocol = 2)
 test_data = prepare_data(data['testx'][0], data['testy'][0], NUM_CLASSES, name2id)
 cPickle.dump(test_data, open("./hmdb51/flow_test_data.pik", "wb"), protocol = 2)
-
-
-# file_list = [f for f in os.listdir(path_prefix) if os.path.isfile.isfile(os.path.join(path_prefix, f))]
