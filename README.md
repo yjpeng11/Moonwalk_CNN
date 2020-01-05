@@ -46,7 +46,7 @@ To process the list of files in .mat into python-friendly format, run:
 python prepare_flow1.py
 python prepare_flow1_label.py
 ```
-The name2id and data_path need to be changed accordingly.
+The name2id and data_path at the beginning of scripts need to be changed accordingly.
 
 ### Step 3: Training and testing CNN models
 
@@ -74,7 +74,7 @@ To train the two-stream CNN:
 python CNN_flow.py --mode 0
 ```
 
-Change mode 0 to mode 1 for testing.
+Change mode 0 to mode 1 for testing. The directory of WORKSPACE need to be changed accordingly.
 
 #### Step 3.2: Training and testing the softmax layer of CNN models
 To train the spatial CNN:
