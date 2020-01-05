@@ -44,6 +44,7 @@ and optical flow images.
 To process the list of files in .mat into python-friendly format, run:
 ```
 python prepare_flow1.py
+python prepare_flow1_label.py
 ```
 The name2id and data_path need to be changed accordingly.
 
