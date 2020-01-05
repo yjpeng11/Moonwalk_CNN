@@ -1,4 +1,4 @@
-# Two-stream Convolutional Neural Networks Fails to Understand Motion Congruency in Human Actions
+# Weak integration of form and motion in two-stream CNNs for action recognition
 
 Tensorflow implementation of "Two-stream Convolutional Neural Networks Fails to Understand Motion Congruency in Human Actions"
 
