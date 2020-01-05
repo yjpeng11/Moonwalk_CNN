@@ -10,7 +10,7 @@ Yujia Peng, Tianmin Shu, and Hongjing Lu
 
 Clone this repository 
 ```
-git clone https://github.com/yjpeng11/BM_CNN.git
+git clone https://github.com/yjpeng11/Moonwalk_CNN.git
 ```
 
 ### Prerequisites
